@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .passed { color: green; }
+        .failed { color: red; }
+        .skipped { color: orange; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Car Rental System Test Report</h1>
+    <div class="summary">
+        <p><strong>Start Time:</strong> 2025-07-10T14:48:46.005670600</p>
+        <p><strong>End Time:</strong> 2025-07-10T14:49:27.472116300</p>
+        <p><strong>Duration:</strong> 41 seconds</p>
+        <p><strong>Total Tests:</strong> 1</p>
+        <p><strong>Passed:</strong> <span class="passed">0</span></p>
+        <p><strong>Failed:</strong> <span class="failed">1</span></p>
+        <p><strong>Skipped:</strong> <span class="skipped">0</span></p>
+    </div>
+    <h2>Test Results</h2>
+    <table>
+        <tr>
+            <th>Test Name</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+        <tr>
+            <td>Registration16: Verify Capacity with 1 seat</td>
+            <td class="failed">FAILED</td>
+            <td>element click intercepted: Element <button type="submit" class="btn btn-outline-light">...</button> is not clickable at point (1450, 30). Other element would receive the click: <div class="notification error">...</div>
+  (Session info: chrome=138.0.7204.97)
+Build info: version: '4.18.1', revision: 'b1d3319b48'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [299f0b0120ec064b262e168cd860d1c5, clickElement {id=f.8E5AEAA1931A38ABC0027F4B1B42E28E.d.ED10F6914DF8B91BD66800DC09060BDD.e.117}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.97, chrome: {chromedriverVersion: 138.0.7204.94 (545025748884..., userDataDir: C:\Users\LEGION~1\AppData\L...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:60148}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:60148/devtoo..., se:cdpVersion: 138.0.7204.97, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Element: [[ChromeDriver: chrome on windows (299f0b0120ec064b262e168cd860d1c5)] -> xpath: //button[@type='submit']]
+Session ID: 299f0b0120ec064b262e168cd860d1c5</td>
+        </tr>
+    </table>
+</body>
+</html>

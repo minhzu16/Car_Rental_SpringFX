@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/fac-ico.webp}" href="/images/fac-ico.webp" />
+    <title th:text="${car.carID != null ? 'Edit Car' : 'Add New Car'} + ' - BAM Car Rental'">Car Form - BAM Car Rental</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}" href="/css/admin.css" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+            font-size: 1.6rem;
+        }
+        
+        .navbar {
+            background-color: #d2042d !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.7rem 1.2rem;
+            transition: color 0.3s ease;
+            margin-right: 22px;
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 3px solid white;
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .form-header {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(210, 4, 45, 0.25);
+            border-color: #d2042d;
+        }
+        
+        .btn-primary {
+            background-color: #d2042d;
+            border-color: #d2042d;
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .btn-primary:hover {
+            background-color: #b5032a;
+            border-color: #b5032a;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 320px;
+        }
+        
+        .notification {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin-bottom: 10px;
+            animation: fadeIn 0.5s;
+            position: relative;
+            border-left: 5px solid;
+        }
+        
+        .notification.error {
+            border-left-color: #d2042d;
+        }
+        
+        .notification.success {
+            border-left-color: #28a745;
+        }
+        
+        .notification-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .error-list {
+            background-color: #fff8f8;
+            border-left: 4px solid #d2042d;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+        
+        .error-list ul {
+            margin-bottom: 0;
+            padding-left: 1.5rem;
+        }
+        
+        .error-list li {
+            color: #d2042d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-list li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .field-error {
+            border-color: #d2042d;
+        }
+        
+        .error-feedback {
+            color: #d2042d;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/admin">BAM Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/cars">Cars</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/rentals">Rentals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/customers">Customers</a>
+                        </li>
+                    </ul>
+                    <form th:action="@{/logout}" method="post" class="d-flex">
+                        <button type="submit" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Notification container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <main class="container py-4">
+        <div class="form-container">
+            <div class="form-header">
+                <h1 class="form-title" th:text="${car.carID != null ? 'Edit Car' : 'Add New Car'}">Add New Car</h1>
+            </div>
+            
+            <!-- Display validation errors -->
+            <div class="error-list" th:if="${errors != null && !errors.empty}">
+                <h5>Please correct the following errors:</h5>
+                <ul>
+                    <li th:each="error : ${errors}" th:text="${error}">Error message</li>
+                </ul>
+            </div>
+            
+            <form th:action="${car.carID != null ? '/admin/cars/edit/' + car.carID : '/admin/cars/add'}" 
+                  th:object="${car}" 
+                  method="post" 
+                  class="needs-validation" 
+                  novalidate>
+                
+                <input type="hidden" th:field="*{carID}" />
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="carName" class="form-label">Car Name</label>
+                        <input type="text" class="form-control" id="carName" th:field="*{carName}" required
+                               th:classappend="${errors != null && errors.contains('Car Name is required') ? 'field-error' : ''}">
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Car Name is required')}">Car Name is required</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="producer" class="form-label">Producer</label>
+                        <select class="form-select" id="producer" th:field="*{producer.producerID}" required
+                                th:classappend="${errors != null && errors.contains('Producer is required') ? 'field-error' : ''}">
+                            <option value="">Select Producer</option>
+                            <option th:each="p : ${producers}" 
+                                    th:value="${p.producerID}" 
+                                    th:text="${p.producerName}"
+                                    th:selected="${car.producer != null && car.producer.producerID == p.producerID}">
+                                    Producer Name
+                            </option>
+                        </select>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Producer is required')}">Producer is required</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="carModelYear" class="form-label">Model Year</label>
+                        <input type="number" class="form-control" id="carModelYear" th:field="*{carModelYear}" required
+                               th:classappend="${errors != null && (errors.contains('Model Year is required') || errors.contains('Model Year must be at least 1900')) ? 'field-error' : ''}">
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Model Year is required')}">Model Year is required</div>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Model Year must be at least 1900')}">Model Year must be at least 1900</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="color" class="form-label">Color</label>
+                        <input type="text" class="form-control" id="color" th:field="*{color}" required
+                               th:classappend="${errors != null && errors.contains('Color is required') ? 'field-error' : ''}">
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Color is required')}">Color is required</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="capacity" class="form-label">Capacity (seats)</label>
+                        <input type="number" class="form-control" id="capacity" th:field="*{capacity}" required
+                               th:classappend="${errors != null && (errors.contains('Capacity is required') || errors.contains('Số chỗ ngồi phải từ 2 trở lên')) ? 'field-error' : ''}">
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Capacity is required')}">Capacity is required</div>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Số chỗ ngồi phải từ 2 trở lên')}">Số chỗ ngồi phải từ 2 trở lên</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rentPrice" class="form-label">Rent Price ($ per day)</label>
+                        <input type="number" step="0.01" class="form-control" id="rentPrice" th:field="*{rentPrice}" required
+                               th:classappend="${errors != null && (errors.contains('Rent Price is required') || errors.contains('Giá thuê phải từ 10$ trở lên')) ? 'field-error' : ''}">
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Rent Price is required')}">Rent Price is required</div>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Giá thuê phải từ 10$ trở lên')}">Giá thuê phải từ 10$ trở lên</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" th:field="*{status}" required
+                                th:classappend="${errors != null && (errors.contains('Status is required') || errors.contains('Trạng thái không hợp lệ')) ? 'field-error' : ''}">
+                            <option value="">Select Status</option>
+                            <option value="Available">Available</option>
+                            <option value="Rented">Rented</option>
+                            <option value="Reserved">Reserved</option>
+                            <option value="Maintenance">Maintenance</option>
+                        </select>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Status is required')}">Status is required</div>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Trạng thái không hợp lệ')}">Trạng thái không hợp lệ</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="imageUrl" class="form-label">Image URL</label>
+                        <input type="text" class="form-control" id="imageUrl" th:field="*{imageUrl}" required
+                               th:classappend="${errors != null && (errors.contains('Image URL is required') || errors.contains('URL hình ảnh không hợp lệ')) ? 'field-error' : ''}">
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('Image URL is required')}">Image URL is required</div>
+                        <div class="error-feedback" th:if="${errors != null && errors.contains('URL hình ảnh không hợp lệ')}">URL hình ảnh không hợp lệ</div>
+                        <small class="text-muted">Enter path to image (e.g., /images/car-1.jpg)</small>
+                    </div>
+                </div>
+                
+                <!-- Ẩn trường Import Date vì nó sẽ được tự động thiết lập -->
+                <input type="hidden" id="importDate" th:field="*{importDate}" />
+                
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" th:field="*{description}" rows="3" required></textarea>
+                    <div class="invalid-feedback">Please enter description.</div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="/admin/cars" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>
+                        <span th:text="${car.carID != null ? 'Update Car' : 'Add Car'}">Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <div th:replace="~{html/fragments/footer :: footer}"></div>
+    
+    <!-- JavaScript -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.needs-validation');
+            
+            form.addEventListener('submit', function(event) {
+                let hasError = false;
+                
+                // Kiểm tra capacity
+                const capacityField = document.getElementById('capacity');
+                if (capacityField && parseInt(capacityField.value) < 2) {
+                    event.preventDefault();
+                    hasError = true;
+                    capacityField.classList.add('field-error');
+                    showNotification('Lỗi xác thực', 'Số chỗ ngồi phải từ 2 trở lên.', 'error');
+                } else if (capacityField) {
+                    capacityField.classList.remove('field-error');
+                }
+                
+                // Kiểm tra rent price
+                const rentPriceField = document.getElementById('rentPrice');
+                if (rentPriceField && parseFloat(rentPriceField.value) < 10) {
+                    event.preventDefault();
+                    hasError = true;
+                    rentPriceField.classList.add('field-error');
+                    showNotification('Lỗi xác thực', 'Giá thuê phải từ 10$ trở lên.', 'error');
+                } else if (rentPriceField) {
+                    rentPriceField.classList.remove('field-error');
+                }
+                
+                // Kiểm tra model year
+                const modelYearField = document.getElementById('carModelYear');
+                if (modelYearField && parseInt(modelYearField.value) < 1900) {
+                    event.preventDefault();
+                    hasError = true;
+                    modelYearField.classList.add('field-error');
+                    showNotification('Lỗi xác thực', 'Model Year must be at least 1900.', 'error');
+                } else if (modelYearField) {
+                    modelYearField.classList.remove('field-error');
+                }
+                
+                // Kiểm tra image URL
+                const imageUrlField = document.getElementById('imageUrl');
+                if (imageUrlField && imageUrlField.value && 
+                    !imageUrlField.value.startsWith('/images/') && 
+                    !imageUrlField.value.startsWith('http://') && 
+                    !imageUrlField.value.startsWith('https://')) {
+                    event.preventDefault();
+                    hasError = true;
+                    imageUrlField.classList.add('field-error');
+                    showNotification('Lỗi xác thực', 'URL hình ảnh không hợp lệ.', 'error');
+                } else if (imageUrlField) {
+                    imageUrlField.classList.remove('field-error');
+                }
+                
+                // Kiểm tra các trường bắt buộc khác
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    hasError = true;
+                    showNotification('Lỗi xác thực', 'Vui lòng kiểm tra lại các trường bắt buộc.', 'error');
+                }
+                
+                // Nếu có lỗi, hiển thị trạng thái validation
+                if (hasError) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add('was-validated');
+                }
+            });
+            
+            // Kiểm tra capacity khi thay đổi giá trị
+            const capacityField = document.getElementById('capacity');
+            if (capacityField) {
+                capacityField.addEventListener('change', function() {
+                    if (parseInt(this.value) < 2) {
+                        this.classList.add('field-error');
+                        showNotification('Lỗi xác thực', 'Số chỗ ngồi phải từ 2 trở lên.', 'error');
+                    } else {
+                        this.classList.remove('field-error');
+                    }
+                });
+            }
+            
+            // Kiểm tra rent price khi thay đổi giá trị
+            const rentPriceField = document.getElementById('rentPrice');
+            if (rentPriceField) {
+                rentPriceField.addEventListener('change', function() {
+                    if (parseFloat(this.value) < 10) {
+                        this.classList.add('field-error');
+                        showNotification('Lỗi xác thực', 'Giá thuê phải từ 10$ trở lên.', 'error');
+                    } else {
+                        this.classList.remove('field-error');
+                    }
+                });
+            }
+            
+            // Kiểm tra model year khi thay đổi giá trị
+            const modelYearField = document.getElementById('carModelYear');
+            if (modelYearField) {
+                modelYearField.addEventListener('change', function() {
+                    if (parseInt(this.value) < 1900) {
+                        this.classList.add('field-error');
+                        showNotification('Lỗi xác thực', 'Model Year must be at least 1900.', 'error');
+                    } else {
+                        this.classList.remove('field-error');
+                    }
+                });
+            }
+            
+            // Kiểm tra image URL khi thay đổi giá trị
+            const imageUrlField = document.getElementById('imageUrl');
+            if (imageUrlField) {
+                imageUrlField.addEventListener('change', function() {
+                    if (this.value && !this.value.startsWith('/images/') && !this.value.startsWith('http://') && !this.value.startsWith('https://')) {
+                        this.classList.add('field-error');
+                        showNotification('Lỗi xác thực', 'URL hình ảnh không hợp lệ.', 'error');
+                    } else {
+                        this.classList.remove('field-error');
+                    }
+                });
+            }
+            
+            // Display errors from server if any
+            const errors = document.querySelectorAll('.error-feedback');
+            if (errors.length > 0) {
+                showNotification('Lỗi xác thực', 'Vui lòng sửa các lỗi được đánh dấu.', 'error');
+                
+                // Highlight fields with errors
+                document.querySelectorAll('.field-error').forEach(field => {
+                    field.focus();
+                });
+            }
+            
+            // Show success message if redirected with success message
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMessage = urlParams.get('successMessage');
+            if (successMessage) {
+                showNotification('Thành công', successMessage, 'success');
+            }
+        });
+        
+        // Notification system
+        function showNotification(title, message, type = 'error') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = 'notification ' + type;
+            
+            const closeBtn = document.createElement('span');
+            closeBtn.className = 'notification-close';
+            closeBtn.innerHTML = '&times;';
+            closeBtn.onclick = function() {
+                removeNotification(notification);
+            };
+            
+            const titleElement = document.createElement('div');
+            titleElement.className = 'notification-title';
+            titleElement.textContent = title;
+            
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            
+            notification.appendChild(closeBtn);
+            notification.appendChild(titleElement);
+            notification.appendChild(messageElement);
+            
+            container.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(function() {
+                removeNotification(notification);
+            }, 5000);
+        }
+        
+        function removeNotification(notification) {
+            notification.style.animation = 'fadeOut 0.5s';
+            setTimeout(function() {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html> 

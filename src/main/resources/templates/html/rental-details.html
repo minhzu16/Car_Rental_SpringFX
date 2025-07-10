@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{../images/fac-ico.webp}" href="/images/fac-ico.webp" />
+    <title>Rental Details - BAM Car Rental</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/customer.css}" href="/css/customer.css" />
+    <link rel="stylesheet" th:href="@{/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #d2042d;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            padding: 0.7rem 1.2rem;
+            transition: color 0.3s ease;
+            margin-right: 22px;
+        }
+        
+        .nav-link:hover {
+            color: #d2042d;
+        }
+        
+        .nav-link.active {
+            color: #d2042d;
+            border-bottom: 3px solid #d2042d;
+            padding-bottom: 0.5rem;
+        }
+        
+        .details-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .details-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .details-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .details-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .rental-id {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        
+        .status-badge {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .status-completed {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+        
+        .status-active {
+            background-color: #cfe2ff;
+            color: #084298;
+        }
+        
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-early-return-requested {
+            background-color: #d8f3dc;
+            color: #176b39;
+        }
+        
+        .car-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .car-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .car-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .car-name:after {
+            content: '';
+            position: absolute;
+            width: 40%;
+            height: 3px;
+            background: #d2042d;
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .car-producer {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 1.8rem;
+        }
+        
+        .detail-section {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .detail-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 0.7rem;
+            position: relative;
+        }
+        
+        .section-title:before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: #d2042d;
+            bottom: -2px;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .total-price {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #d2042d;
+            text-align: right;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+            animation: bounce 1s ease infinite;
+            animation-iteration-count: 1;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-2px); }
+        }
+        
+        .btn-cancel {
+            background-color: #d2042d;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.8rem 2.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(210, 4, 45, 0.2);
+        }
+        
+        .btn-cancel:hover {
+            background-color: #b5032a;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(210, 4, 45, 0.3);
+        }
+        
+        .btn-back {
+            background-color: #6c757d;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.8rem 2.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
+        }
+        
+        .btn-back:hover {
+            background-color: #5a6268;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        }
+        
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animation for content */
+        .animate-content {
+            animation: slideUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .row > div {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav th:if="${isAdmin}" class="navbar navbar-expand-lg navbar-dark" style="background-color: #d2042d !important;">
+            <div class="container">
+                <a class="navbar-brand" href="/admin">BAM Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/cars">Cars</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/rentals">Rentals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/customers">Customers</a>
+                        </li>
+                    </ul>
+                    <form th:action="@{/logout}" method="post" class="d-flex">
+                        <button type="submit" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <nav th:unless="${isAdmin}" class="navbar navbar-expand-lg bg-white">
+            <div class="container">
+                <a class="navbar-brand" href="/">BAM</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>HOME</a>
+                        </li>
+                        <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a class="nav-link active" href="/rental-history"><i class="fas fa-history me-1"></i>HISTORY</a>
+                        </li>
+                            
+                    </ul>
+                    
+                    <div class="d-flex" th:if="${!#authorization.expression('isAuthenticated()')}">
+                        <a href="/login" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                        <a href="/register" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
+                    </div>
+                    
+                    <div class="d-flex align-items-center" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <a href="/profile" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-5">
+        <div class="details-container">
+            <!-- Alert Messages -->
+            <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+            
+            <div class="details-header">
+                <div class="details-title">
+                    <span>Rental Details</span>
+                    <span class="status-badge" 
+                          th:classappend="${rental.getStatusString() == 'COMPLETED' ? 'status-completed' : 
+                                          (rental.getStatusString() == 'ACTIVE' ? 'status-active' : 
+                                          (rental.getStatusString() == 'CANCELLED' ? 'status-cancelled' : 
+                                          (rental.getStatusString() == 'PENDING' ? 'status-pending' : 'status-early-return-requested')))}"
+                          th:text="${rental.status}">ACTIVE</span>
+                </div>
+                <div class="rental-id" th:text="${'ID: ' + rental.id.carId + '-' + rental.id.customerId + '-' + #temporals.format(rental.id.pickupDate, 'yyyyMMdd')}">ID: 12345-67890-20230601</div>
+            </div>
+            
+            <div class="row animate-content">
+                <div class="col-md-6">
+                    <img th:src="${rental.car.imageUrl}" src="/images/car-1.jpg" alt="Car Image" class="car-image">
+                    
+                    <!-- Thêm thông tin về trạng thái thuê xe -->
+                    <div class="detail-section">
+                        <h3 class="section-title">Rental Status</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">
+                                <span class="status-badge" 
+                                      th:classappend="${rental.getStatusString() == 'COMPLETED' ? 'status-completed' : 
+                                                      (rental.getStatusString() == 'ACTIVE' ? 'status-active' : 
+                                                      (rental.getStatusString() == 'CANCELLED' ? 'status-cancelled' : 
+                                                      (rental.getStatusString() == 'PENDING' ? 'status-pending' : 'status-early-return-requested')))}"
+                                      th:text="${rental.status}">ACTIVE</span>
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Created at:</span>
+                            <span class="detail-value" th:text="${#temporals.format(rental.id.pickupDate, 'dd MMM yyyy')}">01 Jun 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="car-name" th:text="${rental.car.carName}">Aston Martin DBX</h2>
+                    <p class="car-producer" th:text="${rental.car.producer.producerName}">Aston Martin</p>
+                    
+                    <div class="detail-section">
+                        <h3 class="section-title"><i class="fas fa-car me-2"></i>Car Details</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">Model Year:</span>
+                            <span class="detail-value" th:text="${rental.car.carModelYear}">2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Color:</span>
+                            <span class="detail-value" th:text="${rental.car.color}">Black</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Capacity:</span>
+                            <span class="detail-value" th:text="${rental.car.capacity + ' seats'}">4 seats</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Description:</span>
+                            <span class="detail-value" th:text="${rental.car.description}">Luxury SUV</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3 class="section-title"><i class="fas fa-info-circle me-2"></i>Rental Information</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">Pickup Date:</span>
+                            <span class="detail-value" th:text="${#temporals.format(rental.id.pickupDate, 'dd MMM yyyy')}">01 Jun 2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Return Date:</span>
+                            <span class="detail-value" th:text="${#temporals.format(rental.returnDate, 'dd MMM yyyy')}">05 Jun 2023</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Duration:</span>
+                            <span class="detail-value" th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(rental.id.pickupDate, rental.returnDate) + ' days'}">5 days</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Daily Rate:</span>
+                            <span class="detail-value" th:text="${'$' + #numbers.formatDecimal(rental.car.rentPrice, 0, 'COMMA', 0, 'POINT')}">$170</span>
+                        </div>
+                        <div class="total-price" th:text="${'Total: $' + #numbers.formatDecimal(rental.rentPrice, 0, 'COMMA', 0, 'POINT')}">Total: $850</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons text-center mt-4">
+                <a href="/rental-history" class="btn btn-back">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Rental History
+                </a>
+                
+                <!-- Pending Rental Actions (Cancel) -->
+                <th:block th:if="${rental.getStatusString() == 'PENDING'}">
+                    <form th:action="@{/cancel-rental}" method="post" class="d-inline">
+                        <input type="hidden" name="customerId" th:value="${rental.id.customerId}" />
+                        <input type="hidden" name="carId" th:value="${rental.id.carId}" />
+                        <input type="hidden" name="pickupDate" th:value="${rental.id.pickupDate}" />
+                        <button type="submit" class="btn btn-danger ms-2"
+                                onclick="return confirm('Are you sure you want to cancel this rental? This action cannot be undone.');">
+                            <i class="fas fa-times me-1"></i>Cancel Rental
+                        </button>
+                    </form>
+                </th:block>
+                
+                <!-- Active Rental Actions (Early Return) -->
+                <th:block th:if="${rental.getStatusString() == 'ACTIVE'}">
+                    <!-- Early Return Request Button and Form -->
+                    <button type="button" class="btn btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#earlyReturnModal">
+                        <i class="fas fa-clock me-1"></i>Request Early Return
+                    </button>
+                </th:block>
+                
+                <!-- Display waiting message for pending approvals -->
+                <div th:if="${rental.getStatusString() == 'PENDING'}" class="alert alert-warning mt-3">
+                    <i class="fas fa-clock me-2"></i>Your rental request is awaiting admin approval. This process typically takes less than 24 hours.
+                </div>
+                
+                <!-- Display waiting message for early return requests -->
+                <div th:if="${rental.getStatusString() == 'EARLY_RETURN'}" class="alert alert-info mt-3">
+                    <i class="fas fa-clock me-2"></i>Your early return request is awaiting admin approval. Please keep the car until you receive confirmation.
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Early Return Modal -->
+    <div class="modal fade" id="earlyReturnModal" tabindex="-1" aria-labelledby="earlyReturnModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="earlyReturnModalLabel">Request Early Return</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="earlyReturnForm" th:action="@{/request-early-return}" method="post">
+                        <input type="hidden" name="customerId" th:value="${rental.id.customerId}" />
+                        <input type="hidden" name="carId" th:value="${rental.id.carId}" />
+                        <input type="hidden" name="pickupDate" th:value="${rental.id.pickupDate}" />
+                        
+                        <div class="mb-3">
+                            <p>Current return date: <strong th:text="${#temporals.format(rental.returnDate, 'dd MMM yyyy')}">05 Jun 2023</strong></p>
+                            <p>Please select the new return date:</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="newReturnDate" class="form-label">New Return Date</label>
+                            <input type="date" class="form-control" id="newReturnDate" name="newReturnDate" required 
+                                   th:min="${T(java.time.LocalDate).now()}" 
+                                   th:max="${rental.returnDate.minusDays(1)}" />
+                            <div class="form-text">The new return date must be earlier than your current return date and not in the past.</div>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="confirmEarlyReturn" required>
+                            <label class="form-check-label" for="confirmEarlyReturn">
+                                I understand that this request needs admin approval, and I will continue to be responsible for the car until the request is approved.
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="earlyReturnForm" class="btn btn-primary">Submit Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div th:replace="~{html/fragments/footer :: footer}"></div>
+    
+    <!-- JavaScript -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Thêm các lớp animation cho các phần tử khi trang đã tải
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.animate-content').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html> 

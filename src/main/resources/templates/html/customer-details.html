@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Details - Admin</title>
+    <link rel="icon" th:href="@{../images/fac-ico.webp}" />
+    
+    <!-- CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #333;
+        min-height: 100vh;
+        font-size: 1.6rem;
+      }
+      
+      .navbar {
+        background-color: #d2042d !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        color: white;
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+      }
+      
+      .nav-link {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.7rem 1.2rem;
+        transition: color 0.3s ease;
+        margin-right: 22px;
+      }
+      
+      .nav-link.active {
+        color: white !important;
+        border-bottom: 3px solid white;
+        padding-bottom: 0.5rem;
+      }
+      
+      .container-box {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        margin-top: 2rem;
+      }
+      
+      .profile-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      
+      .profile-icon {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        margin-right: 1.5rem;
+        color: #d2042d;
+        font-size: 2rem;
+      }
+      
+      .profile-name {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.25rem;
+      }
+      
+      .profile-label {
+        font-size: 1rem;
+        color: #6c757d;
+      }
+      
+      .info-section {
+        margin-bottom: 2rem;
+      }
+      
+      .info-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .info-item {
+        display: flex;
+        margin-bottom: 1rem;
+      }
+      
+      .info-label {
+        font-weight: 600;
+        width: 140px;
+        color: #555;
+      }
+      
+      .info-value {
+        flex: 1;
+      }
+      
+      .badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+      }
+      
+      .badge-active {
+        background-color: #cfe2ff;
+        color: #084298;
+      }
+      
+      .badge-inactive {
+        background-color: #f8f9fa;
+        color: #6c757d;
+      }
+      
+      .rental-card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1rem;
+      }
+      
+      .rental-card-header {
+        background-color: #f8f9fa;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .rental-card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+      
+      .rental-card-body {
+        padding: 1rem;
+      }
+      
+      .status-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.35rem 0.65rem;
+        border-radius: 50px;
+      }
+      
+      .status-active {
+        background-color: #cfe2ff;
+        color: #084298;
+      }
+      
+      .status-completed {
+        background-color: #d1e7dd;
+        color: #0f5132;
+      }
+      
+      .status-cancelled {
+        background-color: #f8d7da;
+        color: #842029;
+      }
+    </style>
+</head>
+<body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/admin">BAM Admin</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link" th:classappend="${isDashboard} ? 'active' : ''" href="/admin">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:classappend="${isCarsPage} ? 'active' : ''" href="/admin/cars">Cars</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:classappend="${isRentalsPage} ? 'active' : ''" href="/admin/rentals">Rentals</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:classappend="${isCustomersPage} ? 'active' : ''" href="/admin/customers">Customers</a>
+              </li>
+            </ul>
+            <form th:action="@{/logout}" method="post" class="d-flex">
+              <button type="submit" class="btn btn-outline-light">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container py-4">
+        <div class="container-box">
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a href="/admin/customers" class="text-decoration-none text-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Customers
+                </a>
+            </div>
+            
+            <!-- Customer Profile -->
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h1 class="profile-name" th:text="${customer.customerName}">John Doe</h1>
+                        <p class="profile-label" th:text="${'Customer ID: ' + customer.customerID}">Customer ID: 1</p>
+                        <span class="badge" th:classappend="${customer.account != null ? 'badge-active' : 'badge-inactive'}" th:text="${customer.account != null ? 'Active Account' : 'No Account'}">Active Account</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Personal Information -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-section">
+                        <h2 class="info-title">Personal Information</h2>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Full Name:</div>
+                            <div class="info-value" th:text="${customer.customerName}">John Doe</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Email:</div>
+                            <div class="info-value" th:text="${customer.email}">john@example.com</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Phone:</div>
+                            <div class="info-value" th:text="${customer.mobile}">+1234567890</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Address:</div>
+                            <div class="info-value" th:text="${customer.address}">123 Main St, City</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Birthday:</div>
+                            <div class="info-value" th:text="${customer.birthday != null ? #temporals.format(customer.birthday, 'dd MMM yyyy') : 'N/A'}">01 Jan 1990</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- License Information -->
+                <div class="col-md-6">
+                    <div class="info-section">
+                        <h2 class="info-title">License Information</h2>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Identity Card:</div>
+                            <div class="info-value" th:text="${customer.identityCard}">ID12345678</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">License Number:</div>
+                            <div class="info-value" th:text="${customer.licenceNumber}">LIC87654321</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">License Date:</div>
+                            <div class="info-value" th:text="${customer.licenceDate != null ? #temporals.format(customer.licenceDate, 'dd MMM yyyy') : 'N/A'}">15 Jan 2020</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Username:</div>
+                            <div class="info-value" th:text="${customer.account != null ? customer.account.accountName : 'N/A'}">johndoe</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">Role:</div>
+                            <div class="info-value" th:text="${customer.account != null ? customer.account.role : 'N/A'}">ROLE_CUSTOMER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Rentals -->
+            <div class="info-section">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="info-title mb-0">Recent Rentals</h2>
+                    <a th:href="@{/admin/customer/{id}/rentals(id=${customer.customerID})}" class="btn btn-sm btn-outline-primary">
+                        View All Rentals
+                    </a>
+                </div>
+                
+                <!-- Rentals List -->
+                <div class="row" th:if="${!#lists.isEmpty(rentals)}">
+                    <div class="col-md-6" th:each="rental, iterStat : ${rentals}" th:if="${iterStat.index < 4}">
+                        <div class="card rental-card">
+                            <div class="rental-card-header d-flex justify-content-between align-items-center">
+                                <h5 class="rental-card-title" th:text="${rental.car.carName}">Aston Martin DBX</h5>
+                                <span class="status-badge" 
+                                      th:classappend="${rental.getStatusString() == 'COMPLETED' ? 'status-completed' : 
+                                                      (rental.getStatusString() == 'ACTIVE' ? 'status-active' : 'status-cancelled')}"
+                                      th:text="${rental.status}">ACTIVE</span>
+                            </div>
+                            <div class="rental-card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-muted" th:text="${#temporals.format(rental.id.pickupDate, 'dd MMM yyyy') + ' - ' + #temporals.format(rental.returnDate, 'dd MMM yyyy')}">01 Jun 2023 - 05 Jun 2023</small>
+                                    <small class="text-muted" th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(rental.id.pickupDate, rental.returnDate) + ' days'}">5 days</small>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span th:text="${'$' + #numbers.formatDecimal(rental.rentPrice, 0, 'COMMA', 0, 'POINT')}">$850</span>
+                                    <a th:href="@{/rental-details(customerId=${rental.id.customerId},carId=${rental.id.carId},pickupDate=${rental.id.pickupDate})}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i>Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center py-4" th:if="${#lists.isEmpty(rentals)}">
+                    <i class="fas fa-car-side fa-3x mb-3 text-muted"></i>
+                    <h6 class="text-muted">No rental history found</h6>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

@@ -1,0 +1,27 @@
+package org;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication(
+        scanBasePackages = {
+                "org.controller",
+                "org.service",
+                "org.repository",
+                "org.utils",
+                "org.enums",
+                "org.config",
+                "org.exception",
+                "org.entity"
+        })
+@EntityScan("org.entity")
+@EnableJpaRepositories("org.repository")
+public class CarRentalManagementApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(CarRentalManagementApplication.class, args);
+    }
+    
+}

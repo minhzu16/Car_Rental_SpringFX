@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/images/fac-ico.webp}" href="/images/fac-ico.webp" />
+    <title>Profile - BAM Car Rental</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/customer.css}" href="/css/customer.css" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #d2042d;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #333;
+            transition: color 0.3s ease;
+            margin-right: 15px;
+        }
+        
+        .nav-link:hover {
+            color: #d2042d;
+        }
+        
+        .nav-link.active {
+            color: #d2042d;
+        }
+        
+        .profile-container {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .profile-header {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+        
+        .profile-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #444;
+        }
+        
+        .form-control {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+        }
+        
+        .form-control:focus {
+            border-color: #d2042d;
+            box-shadow: 0 0 0 0.15rem rgba(210, 4, 45, 0.15);
+        }
+        
+        .btn-update {
+            background-color: #d2042d;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            float: right;
+        }
+        
+        .btn-update:hover {
+            background-color: #b5032a;
+        }
+        
+        .error-message {
+            color: #d2042d;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container">
+                <a class="navbar-brand" href="/">BAM</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/history"><i class="fas fa-history me-1"></i>HISTORY</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/favorites"><i class="fas fa-heart me-1"></i>FAVORITES</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="d-flex align-items-center">
+                        <a href="/profile" class="btn btn-outline-secondary me-2 active">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <a href="/cart" class="btn btn-outline-secondary">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1 class="profile-title">My Profile</h1>
+                <p class="profile-subtitle">Manage your personal information</p>
+            </div>
+            
+            <!-- Alert Messages -->
+            <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+            
+            <form th:action="@{/profile/validate}" method="post" class="needs-validation" novalidate>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label for="customerName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" 
+                               th:value="${customerName != null ? customerName : customer.customerName}">
+                        <span class="error-message" th:if="${customerNameError}" th:text="${customerNameError}"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               th:value="${email != null ? email : customer.email}">
+                        <span class="error-message" th:if="${emailError}" th:text="${emailError}"></span>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12 mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" 
+                               th:value="${address != null ? address : customer.address}">
+                        <span class="error-message" th:if="${addressError}" th:text="${addressError}"></span>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label for="mobile" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="mobile" name="mobile" 
+                               th:value="${mobile != null ? mobile : customer.mobile}">
+                        <span class="error-message" th:if="${mobileError}" th:text="${mobileError}"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="identityCard" class="form-label">Identity Card</label>
+                        <input type="text" class="form-control" id="identityCard" name="identityCard" 
+                               th:value="${identityCard != null ? identityCard : customer.identityCard}">
+                        <span class="error-message" th:if="${identityCardError}" th:text="${identityCardError}"></span>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label for="licenceNumber" class="form-label">Licence Number</label>
+                        <input type="text" class="form-control" id="licenceNumber" name="licenceNumber" 
+                               th:value="${licenceNumber != null ? licenceNumber : customer.licenceNumber}">
+                        <span class="error-message" th:if="${licenceNumberError}" th:text="${licenceNumberError}"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="licenceDate" class="form-label">Licence Date</label>
+                        <input type="text" class="form-control" id="licenceDate" name="licenceDate" placeholder="dd/mm/yyyy" 
+                               th:value="${licenceDate != null ? licenceDate : #temporals.format(customer.licenceDate, 'dd/MM/yyyy')}">
+                        <span class="error-message" th:if="${licenceDateError}" th:text="${licenceDateError}"></span>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label for="birthday" class="form-label">Birthday</label>
+                        <input type="text" class="form-control" id="birthday" name="birthday" placeholder="dd/mm/yyyy" 
+                               th:value="${birthday != null ? birthday : #temporals.format(customer.birthday, 'dd/MM/yyyy')}">
+                        <span class="error-message" th:if="${birthdayError}" th:text="${birthdayError}"></span>
+                    </div>
+                </div>
+                
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-update">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <div th:replace="~{html/fragments/footer :: footer}"></div>
+
+    <!-- JavaScript -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer th:src="@{/js/profile.js}"></script>
+</body>
+</html> 

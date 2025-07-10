@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .passed { color: green; }
+        .failed { color: red; }
+        .skipped { color: orange; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Car Rental System Test Report</h1>
+    <div class="summary">
+        <p><strong>Start Time:</strong> 2025-07-10T13:26:49.830370500</p>
+        <p><strong>End Time:</strong> 2025-07-10T13:28:02.957353300</p>
+        <p><strong>Duration:</strong> 73 seconds</p>
+        <p><strong>Total Tests:</strong> 3</p>
+        <p><strong>Passed:</strong> <span class="passed">0</span></p>
+        <p><strong>Failed:</strong> <span class="failed">3</span></p>
+        <p><strong>Skipped:</strong> <span class="skipped">0</span></p>
+    </div>
+    <h2>Test Results</h2>
+    <table>
+        <tr>
+            <th>Test Name</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+        <tr>
+            <td>Registration18: Verify Status with invalid option (XYZ)</td>
+            <td class="failed">FAILED</td>
+            <td>no such element: Unable to locate element: {"method":"css selector","selector":"#status"}
+  (Session info: chrome=138.0.7204.97)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Build info: version: '4.18.1', revision: 'b1d3319b48'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [f39d2f0af85aef07a811b721dc55c02a, findElement {using=id, value=status}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.97, chrome: {chromedriverVersion: 138.0.7204.94 (545025748884..., userDataDir: C:\Users\LEGION~1\AppData\L...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54217}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:54217/devtoo..., se:cdpVersion: 138.0.7204.97, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: f39d2f0af85aef07a811b721dc55c02a</td>
+        </tr>
+        <tr>
+            <td>Registration16: Verify Capacity with 1 seat</td>
+            <td class="failed">FAILED</td>
+            <td>invalid session id
+Build info: version: '4.18.1', revision: 'b1d3319b48'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [82db6d7ba3a4a36f8ebebc478c9e2c2a, getCurrentUrl {}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.97, chrome: {chromedriverVersion: 138.0.7204.94 (545025748884..., userDataDir: C:\Users\LEGION~1\AppData\L...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54266}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:54266/devtoo..., se:cdpVersion: 138.0.7204.97, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 82db6d7ba3a4a36f8ebebc478c9e2c2a</td>
+        </tr>
+        <tr>
+            <td>Registration17: Verify Rent Price with 9$</td>
+            <td class="failed">FAILED</td>
+            <td>no such element: Unable to locate element: {"method":"css selector","selector":"#rentPrice"}
+  (Session info: chrome=138.0.7204.97)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Build info: version: '4.18.1', revision: 'b1d3319b48'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [9d9f3c058a3ad5f729c13d3bed19a0dd, findElement {using=id, value=rentPrice}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.97, chrome: {chromedriverVersion: 138.0.7204.94 (545025748884..., userDataDir: C:\Users\LEGION~1\AppData\L...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54159}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:54159/devtoo..., se:cdpVersion: 138.0.7204.97, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 9d9f3c058a3ad5f729c13d3bed19a0dd</td>
+        </tr>
+    </table>
+</body>
+</html>

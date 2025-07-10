@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .passed { color: green; }
+        .failed { color: red; }
+        .skipped { color: orange; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Car Rental System Test Report</h1>
+    <div class="summary">
+        <p><strong>Start Time:</strong> 2025-07-10T14:28:55.629340700</p>
+        <p><strong>End Time:</strong> 2025-07-10T14:30:21.205339800</p>
+        <p><strong>Duration:</strong> 85 seconds</p>
+        <p><strong>Total Tests:</strong> 1</p>
+        <p><strong>Passed:</strong> <span class="passed">0</span></p>
+        <p><strong>Failed:</strong> <span class="failed">1</span></p>
+        <p><strong>Skipped:</strong> <span class="skipped">0</span></p>
+    </div>
+    <h2>Test Results</h2>
+    <table>
+        <tr>
+            <th>Test Name</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+        <tr>
+            <td>Registration16: Verify Capacity with 1 seat</td>
+            <td class="failed">FAILED</td>
+            <td>Expected condition failed: waiting for visibility of Proxy element for: DefaultElementLocator 'By.id: capacity' (tried for 20 second(s) with 500 milliseconds interval)</td>
+        </tr>
+    </table>
+</body>
+</html>

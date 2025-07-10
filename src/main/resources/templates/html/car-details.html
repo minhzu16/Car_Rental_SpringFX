@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" th:href="@{/images/fac-ico.webp}" href="../images/fac-ico.webp"/>
+    <title th:text="${car.carName} + ' - BAM Car Rental'">Car Details - BAM Car Rental</title>
+    
+    <!-- CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/general.css}" href="/css/general.css"/>
+    <link rel="stylesheet" th:href="@{/css/customer.css}" href="/css/customer.css"/>
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    
+    <!-- JavaScript -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #333;
+        min-height: 100vh;
+        font-size: 1.6rem;
+      }
+      
+      .navbar {
+        background-color: white !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        color: #d2042d;
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+      }
+      
+      .nav-link {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #333;
+        padding: 0.7rem 1.2rem;
+        transition: color 0.3s ease;
+        margin-right: 22px;
+      }
+      
+      .nav-link.active {
+        color: #d2042d;
+        border-bottom: 3px solid #d2042d;
+        padding-bottom: 0.5rem;
+      }
+      
+      .car-image {
+        height: 400px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      .car-details-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+      }
+      
+      .car-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+      
+      .car-type {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+      }
+      
+      .car-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #d2042d;
+        margin-bottom: 1.5rem;
+      }
+      
+      .car-price span {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #666;
+      }
+      
+      .car-specs {
+        margin-bottom: 2rem;
+      }
+      
+      .spec-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .spec-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(210, 4, 45, 0.1);
+        color: #d2042d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+      
+      .spec-label {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+      }
+      
+      .spec-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .car-description {
+        margin-bottom: 2rem;
+      }
+      
+      .description-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+      
+      .btn-primary {
+        background-color: #d2042d;
+        border-color: #d2042d;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+      }
+      
+      .btn-primary:hover {
+        background-color: #b5032a;
+        border-color: #b5032a;
+      }
+      
+      .btn-outline-primary {
+        color: #d2042d;
+        border-color: #d2042d;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+      }
+      
+      .btn-outline-primary:hover {
+        background-color: #d2042d;
+        border-color: #d2042d;
+        color: white;
+      }
+      
+      .btn-favorite {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        color: #d2042d;
+        font-size: 1.25rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      .btn-favorite:hover {
+        background-color: #f8f9fa;
+      }
+      
+      .btn-favorite.active {
+        background-color: #d2042d;
+        border-color: #d2042d;
+        color: white;
+      }
+    </style>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg bg-white">
+    <div class="container">
+      <a class="navbar-brand" href="/">BAM</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/"><i class="fas fa-home me-1"></i>HOME</a>
+          </li>
+          <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+            <a class="nav-link" href="/rental-history"><i class="fas fa-history me-1"></i>HISTORY</a>
+          </li>
+          
+        </ul>
+        
+        <div class="d-flex" th:if="${!#authorization.expression('isAuthenticated()')}">
+          <a href="/login" class="btn btn-outline-primary me-2">
+            <i class="fas fa-sign-in-alt me-1"></i>Login
+          </a>
+          <a href="/register" class="btn btn-primary">
+            <i class="fas fa-user-plus me-1"></i>Register
+          </a>
+        </div>
+        
+        <div class="d-flex align-items-center" th:if="${#authorization.expression('isAuthenticated()')}">
+          <a href="/profile" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-user"></i>
+          </a>
+          <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-outline-danger">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container py-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <a href="/" class="text-decoration-none text-secondary">
+        <i class="fas fa-arrow-left me-2"></i> Back to Cars
+      </a>
+    </div>
+  </div>
+  
+  <div class="row">
+    <!-- Car Image -->
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <img th:src="${car.imageUrl}" class="car-image w-100" th:alt="${car.carName}" />
+    </div>
+    
+    <!-- Car Details -->
+    <div class="col-lg-6">
+      <div class="car-details-container">
+        <h1 class="car-title" th:text="${car.carName}">Aston Martin DBX</h1>
+        <p class="car-type" th:text="${car.description.split(' ')[0]}">SUV</p>
+        
+        <p class="car-price">
+          <span th:text="${'$' + #numbers.formatDecimal(car.rentPrice, 0, 'COMMA', 0, 'POINT')}">$850</span> <span>per day</span>
+        </p>
+        
+        <div class="car-specs row">
+          <div class="col-6 mb-3">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div>
+                <p class="spec-label">Model Year</p>
+                <p class="spec-value" th:text="${car.carModelYear}">2023</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <p class="spec-label">Capacity</p>
+                <p class="spec-value" th:text="${car.capacity + ' Persons'}">4 Persons</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-palette"></i>
+              </div>
+              <div>
+                <p class="spec-label">Color</p>
+                <p class="spec-value" th:text="${car.color}">Black</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <p class="spec-label">Origin</p>
+                <p class="spec-value" th:text="${car.producer.country}">USA</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-industry"></i>
+              </div>
+              <div>
+                <p class="spec-label">Manufacturer</p>
+                <p class="spec-value" th:text="${car.producer.producerName}">Aston Martin</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div>
+                <p class="spec-label">Status</p>
+                <p class="spec-value" th:text="${car.status}">Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="car-description">
+          <h2 class="description-title">Description</h2>
+          <p th:text="${car.description}">
+            The Aston Martin DBX is a high-performance luxury SUV that combines the brand's signature style and driving dynamics with the versatility of an SUV. With its powerful engine, refined interior, and advanced technology, the DBX offers an exhilarating driving experience.
+          </p>
+        </div>
+        
+        <div class="d-flex">
+          <a href="/rental-form" th:href="@{/rental-form(carId=${car.carID})}" class="btn btn-primary flex-grow-1 me-2">Rent Now</a>
+          <button class="btn-favorite" id="favoriteBtn">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div th:replace="~{html/fragments/footer :: footer}"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Favorite button functionality
+    const favoriteBtn = document.getElementById('favoriteBtn');
+    favoriteBtn.addEventListener('click', function() {
+      const icon = this.querySelector('i');
+      this.classList.toggle('active');
+      if (icon.classList.contains('far')) {
+        icon.classList.replace('far', 'fas');
+      } else {
+        icon.classList.replace('fas', 'far');
+      }
+    });
+  });
+</script>
+</body>
+</html>

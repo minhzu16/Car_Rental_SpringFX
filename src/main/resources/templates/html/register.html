@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" th:href="@{/images/fac-ico.webp}" href="/images/fac-ico.webp" />
+    <title>BAM - Register</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/register.css}" href="/css/register.css" />
+    
+    <style>
+      body {
+        background: linear-gradient(135deg, #7c0a02, #d2042d, #e25822);
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.6rem;
+      }
+      
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      
+      .background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.4);
+      }
+      
+      .form-container {
+        position: relative;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+        width: 650px;
+        max-width: 90%;
+        padding: 2.5rem;
+        border-radius: 8px;
+        margin: 0 auto;
+      }
+      
+      .brand-name h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        color: #d2042d;
+      }
+      
+      .brand-name .tagline {
+        font-size: 0.9rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: -5px;
+      }
+      
+      .form-label {
+        font-weight: 600;
+        color: #444;
+      }
+      
+      .form-control:focus {
+        border-color: #d2042d;
+        box-shadow: 0 0 0 0.25rem rgba(210, 4, 45, 0.25);
+      }
+      
+      .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-cancel:hover {
+        background-color: #5a6268;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+      }
+      
+      .btn-signup {
+        background-color: #d2042d;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-signup:hover {
+        background-color: #b5032a;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(210, 4, 45, 0.2);
+      }
+      
+      .login-link {
+        color: #d2042d;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      
+      .login-link:hover {
+        text-decoration: underline;
+      }
+      
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        z-index: 10;
+        background: none;
+        border: none;
+        color: #666;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <img th:src="@{/images/car.webp}" src="/images/car.webp" alt="car background" />
+    </div>
+    
+    <div class="form-container">
+      <div class="logo-container text-center mb-4">
+        <div class="brand-name">
+          <h1>BAM</h1>
+          <p class="tagline">CAR RENTAL SERVICE</p>
+        </div>
+      </div>
+      
+      <h2 class="text-center mb-4">REGISTER</h2>
+      
+      <!-- Thông báo lỗi hoặc thành công -->
+      <div th:if="${error}" class="alert alert-danger mb-4" role="alert" th:text="${error}"></div>
+      <div th:if="${success}" class="alert alert-success mb-4" role="alert" th:text="${success}"></div>
+      
+      <form th:action="@{/register}" method="post" class="needs-validation" novalidate>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="customerName" class="form-label">Full Name</label>
+            <input
+              type="text"
+              name="customerName"
+              id="customerName"
+              class="form-control"
+              placeholder="John Doe"
+              required
+            />
+            <div class="invalid-feedback">Please enter your full name</div>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="accountName" class="form-label">Username</label>
+            <input
+              type="text"
+              name="accountName"
+              id="accountName"
+              class="form-control"
+              placeholder="johndoe"
+              required
+            />
+            <div class="invalid-feedback">Please enter a username</div>
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="form-control"
+              placeholder="example@gmail.com"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid email</div>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="mobile" class="form-label">Phone Number</label>
+            <input
+              type="tel"
+              name="mobile"
+              id="mobile"
+              class="form-control"
+              placeholder="+1234567890"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid phone number</div>
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <div class="position-relative">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control"
+                placeholder="••••••••"
+                required
+                minlength="6"
+              />
+              <button type="button" class="toggle-password" id="togglePassword">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">Password must be at least 6 characters</div>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="position-relative">
+              <input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                class="form-control"
+                placeholder="••••••••"
+                required
+              />
+              <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">Passwords must match</div>
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label for="address" class="form-label">Address</label>
+            <input
+              type="text"
+              name="address"
+              id="address"
+              class="form-control"
+              placeholder="123 Main St, City, Country"
+              required
+            />
+            <div class="invalid-feedback">Please enter your address</div>
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="birthday" class="form-label">Date of Birth</label>
+            <input
+              type="date"
+              name="birthday"
+              id="birthday"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter your date of birth</div>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="identityCard" class="form-label">Identity Card Number</label>
+            <input
+              type="text"
+              name="identityCard"
+              id="identityCard"
+              class="form-control"
+              placeholder="ID12345678"
+              required
+            />
+            <div class="invalid-feedback">Please enter your identity card number</div>
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="licenceNumber" class="form-label">Driver's License Number</label>
+            <input
+              type="text"
+              name="licenceNumber"
+              id="licenceNumber"
+              class="form-control"
+              placeholder="DL12345678"
+              required
+            />
+            <div class="invalid-feedback">Please enter your driver's license number</div>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="licenceDate" class="form-label">License Issue Date</label>
+            <input
+              type="date"
+              name="licenceDate"
+              id="licenceDate"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter your license issue date</div>
+          </div>
+        </div>
+        
+        <div class="d-flex justify-content-between mt-4">
+          <a href="/login" class="btn btn-cancel">
+            <i class="fas fa-arrow-left me-2"></i>Back to Login
+          </a>
+          <button type="submit" class="btn btn-signup">
+            <i class="fas fa-user-plus me-2"></i>Register
+          </button>
+        </div>
+        
+        <div class="text-center mt-4">
+          <p>Already have an account? <a href="/login" class="login-link">Login here</a></p>
+        </div>
+      </form>
+    </div>
+    
+    <!-- JavaScript -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+          this.querySelector('i').classList.toggle('fa-eye');
+          this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+        
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        
+        toggleConfirmPassword.addEventListener('click', function() {
+          const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          confirmPasswordInput.setAttribute('type', type);
+          this.querySelector('i').classList.toggle('fa-eye');
+          this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+        
+        // Form validation
+        const form = document.querySelector('.needs-validation');
+        
+        form.addEventListener('submit', function(event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          
+          // Check if passwords match
+          const password = document.getElementById('password').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+          
+          if (password !== confirmPassword) {
+            document.getElementById('confirmPassword').setCustomValidity('Passwords do not match');
+            event.preventDefault();
+            event.stopPropagation();
+          } else {
+            document.getElementById('confirmPassword').setCustomValidity('');
+          }
+          
+          form.classList.add('was-validated');
+        });
+      });
+    </script>
+  </body>
+</html>

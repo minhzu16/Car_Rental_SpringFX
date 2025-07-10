@@ -1,0 +1,190 @@
+@import "general.css";
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  border: none;
+  color: var(--white-main);
+  padding: 1.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.form-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+  width: 400px;
+  max-width: 90%;
+  height: auto;
+  padding: 3rem;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+.form-control, .input-group-text {
+  font-size: 1.4rem;
+  border-radius: 9px;
+  border: 0.2rem solid #9197ae39;
+  padding: 1.2rem 1rem;
+}
+
+.form-control:focus {
+  border: 0.2rem solid var(--primary-color);
+  box-shadow: 0 0 0 0.25rem var(--tint-shadow);
+}
+
+.form-floating > label {
+  padding: 1.2rem 1rem;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+  color: var(--primary-color);
+}
+
+.logo {
+  width: 50%;
+  transform: scale(1.3);
+  margin-bottom: 1rem;
+}
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  position: fixed;
+  overflow: hidden;
+  -webkit-filter: brightness(40%);
+  filter: brightness(40%);
+}
+
+.background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h2 {
+  color: var(--secondary-color);
+  font-weight: 600;
+  font-size: 2.4rem;
+}
+
+.btn-primary {
+  padding: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+
+.btn-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-link:hover {
+  color: var(--tint-primary);
+  text-decoration: underline;
+}
+
+.input-group .btn-outline-secondary {
+  border-color: #9197ae39;
+  color: #6c757d;
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+}
+
+.input-group .btn-outline-secondary:hover {
+  background-color: #f8f9fa;
+  color: var(--primary-color);
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  z-index: 1000;
+  animation: slideIn 0.5s ease-in-out;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.alert-hide {
+  display: none;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.form-check-label {
+  font-size: 1.3rem;
+  color: #6c757d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .form-container {
+    padding: 2rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+}
