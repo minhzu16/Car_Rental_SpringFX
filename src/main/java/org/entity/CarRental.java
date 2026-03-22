@@ -19,12 +19,12 @@ public class CarRental {
     @EmbeddedId
     private CarRentalKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("customerId")
     @JoinColumn(name = "CustomerID", nullable = false)
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("carId")
     @JoinColumn(name = "CarID", nullable = false)
     private Car car;

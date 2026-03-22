@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controller.fx.RentalReportController">
+   <children>
+      <VBox layoutX="20.0" layoutY="20.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label styleClass="header-text" text="Rental Reports" />
+                  <AnchorPane HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="card">
+               <children>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Start Date" />
+                        <DatePicker fx:id="startDatePicker" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="End Date" />
+                        <DatePicker fx:id="endDatePicker" />
+                     </children>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#handleGenerateReport" styleClass="button-primary" text="Generate Report" />
+                  <AnchorPane HBox.hgrow="ALWAYS" />
+                  <VBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Label text="Total Revenue" textFill="#7f8c8d" />
+                        <Label fx:id="totalRevenueLabel" text="\$0.00" textFill="#2ecc71" style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </HBox>
+            
+            <TableView fx:id="reportTable" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="colCar" prefWidth="150.0" text="Car" />
+                  <TableColumn fx:id="colCustomer" prefWidth="150.0" text="Customer" />
+                  <TableColumn fx:id="colPickupDate" prefWidth="120.0" text="Pickup" />
+                  <TableColumn fx:id="colReturnDate" prefWidth="120.0" text="Return" />
+                  <TableColumn fx:id="colPrice" prefWidth="120.0" text="Revenue" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

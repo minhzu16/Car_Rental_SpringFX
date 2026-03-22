@@ -1,13 +1,13 @@
 package org;
 
-import org.springframework.boot.SpringApplication;
+import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(
         scanBasePackages = {
-                "org.controller",
+                "org.controller.fx",
                 "org.service",
                 "org.repository",
                 "org.utils",
@@ -21,7 +21,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class CarRentalManagementApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CarRentalManagementApplication.class, args);
+        Application.launch(FXApplication.class, args);
     }
-    
 }

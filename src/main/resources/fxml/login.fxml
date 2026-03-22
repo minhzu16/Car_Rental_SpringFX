@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.controller.fx.LoginController">
+   <children>
+      <AnchorPane layoutX="250.0" layoutY="75.0" prefHeight="350.0" prefWidth="300.0" styleClass="login-container">
+         <children>
+            <VBox alignment="CENTER" spacing="15.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+               <children>
+                  <Text styleClass="header-text" text="Car Rental System">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Label text="Please login to continue" textFill="#7f8c8d" />
+                  
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Account Name" textFill="#2c3e50" />
+                        <TextField fx:id="usernameField" promptText="Enter your account name" styleClass="text-field" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Password" textFill="#2c3e50" />
+                        <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="password-field" />
+                     </children>
+                  </VBox>
+                  
+                  <Label fx:id="errorLabel" styleClass="error-label" visible="false" wrapText="true" />
+                  
+                  <Button fx:id="loginButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" styleClass="button-primary" text="Login">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  
+                  <HBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Label text="Don't have an account?" />
+                        <Button mnemonicParsing="false" onAction="#handleRegister" style="-fx-background-color: transparent; -fx-text-fill: -fx-accent-color; -fx-cursor: hand;" text="Register now" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

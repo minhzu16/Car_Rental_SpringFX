@@ -6,7 +6,6 @@ import org.repository.AccountRepository;
 import org.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -16,27 +15,69 @@ public class DataInitializer implements CommandLineRunner {
 
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final org.repository.CarProducerRepository producerRepository;
+    private final org.repository.CarRepository carRepository;
+    private final CustomPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DataInitializer(AccountRepository accountRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+    public DataInitializer(AccountRepository accountRepository, CustomerRepository customerRepository, 
+                           org.repository.CarProducerRepository producerRepository, 
+                           org.repository.CarRepository carRepository,
+                           CustomPasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.customerRepository = customerRepository;
+        this.producerRepository = producerRepository;
+        this.carRepository = carRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) {
-        // Create admin accounts only if they don't already exist
-        // (SQL scripts might already have created some accounts)
+        System.out.println("DEBUG: Data Initialization started...");
         
-        // Create admin account if it doesn't exist
+        // 1. Create Accounts & Customers
         createAccountIfNotExists("admin", "admin123", "ADMIN", "Admin User", 
                 "admin@example.com", "123 Admin St", "0987654321", "123456789", "ADM-123456");
         
-        // Create manager account if it doesn't exist
-        createAccountIfNotExists("user", "user123", "USER", "User", 
-                "user@example.com", "456 Manager St", "0912345678", "987654321", "MNG-123456");
+        createAccountIfNotExists("user", "user123", "USER", "Standard User", 
+                "user@example.com", "456 Main St", "0912345678", "987654321", "USR-112233");
+
+        // 2. Create Car Fleet
+        if (carRepository.count() == 0) {
+            org.entity.CarProducer p1 = new org.entity.CarProducer();
+            p1.setProducerName("Toyota");
+            p1.setAddress("Japan");
+            p1.setCountry("Japan");
+            p1 = producerRepository.save(p1);
+
+            org.entity.Car car1 = new org.entity.Car();
+            car1.setCarName("Toyota Camry");
+            car1.setCarModelYear(2022);
+            car1.setColor("White");
+            car1.setCapacity(5);
+            car1.setDescription("Reliable sedan for long trips.");
+            car1.setRentPrice(100.0);
+            car1.setStatus("Active");
+            car1.setImportDate(LocalDate.now().minusMonths(6));
+            car1.setProducer(p1);
+            car1.setImageUrl("camry.jpg");
+            carRepository.save(car1);
+
+            org.entity.Car car2 = new org.entity.Car();
+            car2.setCarName("Honda Civic");
+            car2.setCarModelYear(2021);
+            car2.setColor("Black");
+            car2.setCapacity(5);
+            car2.setDescription("Sporty and fuel efficient.");
+            car2.setRentPrice(80.0);
+            car2.setStatus("Active");
+            car2.setImportDate(LocalDate.now().minusMonths(12));
+            car2.setProducer(p1);
+            car2.setImageUrl("civic.jpg");
+            carRepository.save(car2);
+            
+            System.out.println("DEBUG: Car fleet initialized.");
+        }
     }
     
     private void createAccountIfNotExists(String username, String password, String role, 
